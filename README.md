@@ -7,7 +7,7 @@
 <br/>
 
 ## Contents
-### Lecture 1: [Course Logistics and Introduction to SwiftUI](./Lectures/lecture1)  
+### Lecture 1: [Course Logistics and Introduction to SwiftUI](./Lectures/lecture1.md)  
 ### Lecture 2: [MVVM and the Swift Type System]()  
 ### Lecture 3: [Reactive UI + Protocols + Layout]()  
 ### Lecture 4: [Grid + enum + Optionals]()  

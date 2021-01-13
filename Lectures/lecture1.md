@@ -1,7 +1,7 @@
 
 # Lecture 1 :: Course Logistics and Introduction to SwiftUI
 
-[![Stanford SwiftUI 2020](http://img.youtube.com/vi/jbtqIBpUG7g/0.jpg)](https://www.youtube.com/jbtqIBpUG7g) 
+[![Stanford SwiftUI 2020](http://img.youtube.com/vi/jbtqIBpUG7g/0.jpg)](https://youtu.be/jbtqIBpUG7g)
 
 ## UIKit vs SwiftUI
 - **UIKit** : Event-Driven

@@ -3,6 +3,9 @@
 
 [![Stanford SwiftUI 2020](http://img.youtube.com/vi/4GjXq2Sr55Q/0.jpg)](https://www.youtube.com/watch?v=4GjXq2Sr55Q)
 
+<br/>
+
+---
 ## 🍎 MVVM
 * SwiftUI에서 사용하는 디자인 패턴
 * 과거 UIKit에서는 MVC를 많이 사용했다.
@@ -30,3 +33,25 @@
     - 뷰에서 이벤트가 발생하면 뷰모델의 Intent 함수를 호출한다.
     - 모델을 의도대로 변경한다. 모델이 struct라면 프로퍼티를 변경하는 것일 수도 있고, 데이터베이스라면 SQL문을 호출하는 것일수도 있다. 
 * 이러한 양 방향의 흐름은 끊임없이 반복된다. (M->VM->V -> V->VM->M)
+
+<br/>
+
+--- 
+## 🍎 Struct vs Class
+
+### 공통점
+- `let` 또는 `var`로 선언된 프로퍼티를 갖는다.
+- 함수를 갖는다.
+- init(생성자)를 갖는다. : 클래스 또는 구조체의 상태를 초기화 하는 함수를 말한다.
+
+### 차이점
+Struct(구조체)
+- value type : 값의 복사본을 전달함
+- functional programming : 함수형 프로그래밍
+
+Class(클래스)
+- reference type : 힙 영역에 저장되고, 포인터에 의해 전달됨
+- ARC : 자동 레퍼런스(참조) 카운팅
+- object-oriented programming : 객체지향 프로그래밍
+- 상속
+

@@ -45,13 +45,27 @@
 - init(생성자)를 갖는다. : 클래스 또는 구조체의 상태를 초기화 하는 함수를 말한다.
 
 ### 차이점
-Struct(구조체)
-- value type : 값의 복사본을 전달함
-- functional programming : 함수형 프로그래밍
+**Struct(구조체)**
+- **value type** : 값의 복사본을 전달함
+- **functional programming** : 함수형 프로그래밍
+- 상속 불가능
+- 모든 변수에 대해 초기값을 지정할 필요는 없다. **(initalizer 자유)**
+- **mutable** 한 값은 **명시**해야 한다.
+- **대부분의 데이터 구조**는 구조체로 구현되어 있다.
 
-Class(클래스)
-- reference type : 힙 영역에 저장되고, 포인터에 의해 전달됨
-- ARC : 자동 레퍼런스(참조) 카운팅
-- object-oriented programming : 객체지향 프로그래밍
-- 상속
+**Class(클래스)**
+- **reference type** : 힙 영역에 저장되고, 포인터에 의해 전달됨
+- **ARC** : 자동 레퍼런스(참조) 카운팅
+- **object-oriented programming** : 객체지향 프로그래밍
+- 상속 가능
+- 변수를 가지고 있다면 반드시 초기화해주어야 한다. **(initalizer 필수)**
+- 항상 mutable 하다. (변경 가능한 값이다.)
+- 특수한 기능으로 사용
+- SwiftUI의 MVVM 패턴에서 **ViewModel**은 반드시 **클래스**다 (많은 View들에게 공유되어야 하기 때문!)
 
+
+> SwiftUI의 View는 클래스도, 구조체도 아닌 protocol이다.
+
+<br/>
+
+--- 

@@ -125,3 +125,34 @@ let result1 = operation(1,2)    // result1 = 3
 operation = sub
 let result2 = operation(5,1)    // result2 = 4
 ```
+
+<br/>
+
+---
+## 🍎 Clouser
+- 다른 언어의 람다와 비슷한 식
+- 함수도 클로저의 일종이다.
+- 상수와 변수의 reference를 캡쳐해 저장할 수 있다.
+
+1. **전역함수**: 이름이 있고 어떤 값도 캡쳐하지 않는 클로저
+2. **중첩함수**: 이름이 있고 관련한 함수로 부터 값을 캡쳐 할 수 있는 클로저
+3. 경량화 된 문법으로 쓰여지고 관련된 문맥으로부터 값을 캡쳐할 수 있는 **이름이 없는 클로저**
+
+
+```
+func loadPicture(from server: Server, completion: (Picture) -> Void, onFailure:() -> Void) {
+    if let picture = download("photo.jpg",from: server) {
+        completion(picture)
+    } else {
+        onFailure()
+    }
+}
+```
+```
+loadPicture(from: someServer) { picture in
+    someView.currentPicture = picture
+} onFailure: {
+    print("Couldn't download the next picture")
+}
+```
+

@@ -74,14 +74,14 @@
 * Array의 경우 데이터를 저장하지만, 그 데이터의 타입은 Int가 될 수도 있고, String이 될수도 있다. 
 * Array에 들어가는 변수, 함수의 반환형을 신경쓰지 않고 지정하는 방법이 제네릭이다.
 
-### 정의 하기
+### 정의하기
 * 꺾쇠 괄호 안에 임의의 타입을 만들어준다. (placeholder 같은 역할)
-```
-struct Array<Element> {
-    ...
-    func append(_ element: Element) 
-}
-```
+    ```
+    struct Array<Element> {
+        ...
+        func append(_ element: Element) 
+    }
+    ```
 
 ### 선언 및 사용하기
 * 꺾쇠 안의 타입이 정해지면, 따라오는 모든 반환형이 해당 타입처럼 취급된다.
@@ -129,9 +129,9 @@ let result2 = operation(5,1)    // result2 = 4
 <br/>
 
 ---
-## 🍎 Clouser
+## 🍎 Closure
 - 다른 언어의 람다와 비슷한 식
-- 함수도 클로저의 일종이다.
+- 인라인으로 선언하는 함수 (함수도 클로저의 일종이다.)
 - 상수와 변수의 reference를 캡쳐해 저장할 수 있다.
 
 1. **전역함수**: 이름이 있고 어떤 값도 캡쳐하지 않는 클로저

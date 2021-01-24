@@ -337,3 +337,171 @@ private var model: MemoryGame<String> = MemoryGame<String>(numberOfPairsOfCards:
 ```
 private var model: MemoryGame<String> = MemoryGame<String>(numberOfPairsOfCards: 2) { _ in "😀" }
 ```
+
+<br/>
+
+---
+## 🍎 static
+* 일반적으로 구조체나 클래스에 함수를 정의하면, 그 함수는 구조체나 클래스의 인스턴스가 생성되고 난 뒤에 호출할 수 있는 <인스턴스 함수>가 된다.
+* 함수에 `static` 키워드를 붙이면 <정적 함수>가 된다. 이는 인스턴스의 함수가 아닌, **타입**에 대한 함수이다.
+* 함수 뿐만 아니라 변수에도 정적(`static`) 키워드를 붙일 수 있다.
+* 전체 시스템에 대해 동일하게 작동하도록 하는 방법이다.
+
+<br/>
+
+### 🍋 뷰모델의 변수를 초기화하는 함수를 만들기
+위에서 **뷰모델** (`EmojiMemoryGame`)의 변수 `model`을 초기화 하는 코드를 많이 줄였음에도 불구하고 너무 길다! 함수를 통해 초기화 해보자.
+먼저, `model`의 타입인 `MemoryGame<String>`를 반환하는 함수 `createMemoryGame()`를 정의한다. 내부는 초기화문과 동일하게 작성한다.
+
+```
+private var model: MemoryGame<String> = createMemoryGame() // 에러!
+
+func createMemoryGame() -> MemoryGame<String> {
+    return MemoryGame<String>(numberOfPairsOfCards: 2) { _ in "😀" }
+}
+```
+함수 자체에는 문제가 없지만, 인스턴스가 생성되기도 전에 생성자에서 인스턴스 함수를 사용하려고 하기 때문이다. 함수에 `static` 키워드를 붙여 정적함수로 만들고, 타입에 대해 호출될 수 있도록 한다.
+```
+private var model: MemoryGame<String> = EmojiMemoryGame.createMemoryGame()
+
+static func createMemoryGame() -> MemoryGame<String> {
+    return MemoryGame<String>(numberOfPairsOfCards: 2) { _ in "😀" }
+}
+```
+
+<br/>
+
+### 🍋 카드내용을 생성하는 클로저 내부 구체화하기
+지금은 카드를 생성할 때 무조건 `😀`만 넣는 형태다. 원하는 이모지들이 원하는 개수 만큼 짝을 이뤄서 들어가도록 코드를 수정해보자.
+```
+static func createMemoryGame() -> MemoryGame<String> {
+    let emojis: Array<String> = ["👻","🎃","🕷"]
+    return MemoryGame<String>(numberOfPairsOfCards: emojis.count) { pairIndex in
+        return emojis[pairIndex]
+    }
+}
+```
+
+<br/>
+
+---
+## 🍎 Identifiable
+* 프로토콜: 구조체 또는 클래스의 Constraints와 Gains
+    - 반드시 구현해야 하는 항목들에 대한 제약(Constraints)
+    - 프로토콜에서 누구나 사용 가능한 변수 또는 함수 획득(Gains)
+* Identifier 프로토콜
+    - 각 인스턴스를 식별가능하도록 함
+    - 제약 : id라는 변수가 있어야 함
+
+<br/>
+
+### 🍋 뷰와 뷰모델을 연결하기
+뷰에서 뷰모델을 연결한다. `ContentView.swift`에서 `ContentView` 구조체의 변수로 `viewModel`을 추가해준다.
+```
+struct ContentView: View {
+    var viewModel: EmojiMemoryGame
+    ...
+}
+```
+<br/>
+
+그러면 여기저기서 에러가 발생하는데, `ContentView`가 생성될 때 `viewModel`이 초기화되지 않아서 발생하는 에러가 대부분이다. `ContentView`가 생성되는 부분은 두군데이다.
+* **SceneDelegate.swift** 의 `scene(_: willConnectTo: options:)`
+* `ContentView_Previews`의 `previews`
+두 곳에서 모두 코드를 추가해주어야 한다.
+
+```
+func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    let game = EmojiMemoryGame()
+    let contentView = ContentView(viewModel: game)
+    ...
+}
+```
+```
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView(viewModel: EmojiMemoryGame())
+    }
+}
+```
+<br/>
+
+### 🍋 뷰모델을 기반으로 뷰 그리기
+뷰는 뷰모델에 있는 정보를 기반으로 그려지도록 구현해야 한다. 게임에 필요한 카드들의 정보는 뷰모델로부터 `EmojiMemoryGame<String>.Card` 타입의 형태로 전달될 것이다. 따라서, `CardView`에서도 `isFaceUp`이라는 변수 대신, `card`라는 변수로 바꾸고, **card 내부의 정보**를 이용하여 바꿔주는 것이 좋다.
+```
+struct CardView: View {
+    var card: MemoryGame<String>.Card
+    
+    var body: some View {
+        ZStack {
+            if card.isFaceUp {
+                RoundedRectangle(cornerRadius: 10.0).fill().foregroundColor(.white)
+                RoundedRectangle(cornerRadius: 10.0).stroke(lineWidth: 3)
+                Text(card.content)
+            } else {
+                RoundedRectangle(cornerRadius: 10.0).fill().foregroundColor(.orange)
+            }
+        }
+    }
+}
+```
+<br/>
+
+이렇게 바꾸면 `ContentView`에서 `CardView`의 생성자를 호출하는 부분에서 에러가 발생한다. 생성자에 isFaceUp대신 **`card`에 대한 정보**를 넘겨주어야 한다. **ForEach** 반복을 통해, `viewModel.cards` 값을 하나하나 넣어준다.
+
+```
+ForEach(viewModel.cards) { card in
+    CardView(card: card)
+}
+```
+<br/>
+
+하지만 ForEach 반복문에 들어가는 인자는 식별가능한 타입이어야 한다. 구조체는 일반적으로 값 타입이므로 식별이 불가능하다. 따라서 `Card`가 `Identifiable`프로토콜을 채택하도록 한다. 필수로 구현해야 하는 변수 `id`는 어떤 타입이든 상관 없다. 여기서는 **Int**로 하도록 한다!
+```
+struct Card: Identifiable {
+    var id: Int
+    var isFaceUp: Bool = true
+    var isMatched: Bool = false
+    var content: CardContent
+}
+```
+<br/>
+
+`MemoryGame`의 생성자에서 `Card`의 생성자를 호출하는 부분에서, id값까지 초기화해주는 코드도 넣어준다.
+```
+for pairIndex in 0..<numberOfPairsOfCards {
+    let content = cardContentFactory(pairIndex)
+    cards.append(Card(id: pairIndex*2, content: content))
+    cards.append(Card(id: pairIndex*2 + 1, content: content))
+}
+```
+<br/>
+
+### 🍋 뷰에서 이벤트가 발생하면 뷰모델을 통해 모델에게 알려주기
+뷰에서 카드를 터치했을 때, 모델의 `choose(card:)` 함수를 호출하도록 하고 싶다. 하지만 뷰는 모델을 알 수 없기 떄문에 뷰모델을 통해 그 정보를 전달한다.
+
+뷰모델에는 이미 Intent 함수인 `choose(card:)`를 가지고 있다. 이것은 모델의 `choose(card:)`와는 다른 함수다! 뷰모델의 `choose`를 호출하면 모델의 `choose`를 호출하게 된다.
+```
+// 뷰모델의 choose
+func choose(card: MemoryGame<String>.Card) {
+    model.choose(card: card)
+}
+```
+```
+// 모델의 choose
+func choose(card: Card) {
+    print("card choosen : \(card)")
+}
+```
+
+SwiftUI에서 뷰를 **"터치했을때"** 호출되는 함수는 `.onTapGesture(perform:)`이다. perform에서 viewModel.choose(card:)를 호출하면 원하는대로 작동하게 된다! (클로저로 함축 가능)
+```
+CardView(card: card).onTapGesture {
+    viewModel.choose(card: card)
+}
+```
+<br/>
+
+# 완성본
+![image2](./img2/image2.png)
+![image3](./img2/image3.png)

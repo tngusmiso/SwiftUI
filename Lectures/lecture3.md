@@ -42,7 +42,7 @@ SwiftUI는 코드가 아닌 시스템에 의해 호출된다.
     func choose(card: Card) {
         let chosenIndex: Int = self.index(of: card)
         let chosenCard: Card = cards[chosenIndex]
-    chosenCard.isFaceUp = !chosenCard.isFaceUp // ERROR!
+        chosenCard.isFaceUp = !chosenCard.isFaceUp // ERROR!
     }
     ```
     * `chosenCard` 또한 변수에 **복사된 값**이 저장되므로 의도와 맞지 않다.
@@ -81,7 +81,7 @@ class EmojiMemoryGame: ObservableObject {
 ```
 
 **뷰모델**이 `objectWillChange.send()`를 호출하는 시점을 **뷰**가 알기 위해서는 뷰가 가지고있는 뷰모델에 `@ObservedObject` 키워드를 붙여주어야 한다. `objectWillChange.send()`가 호출될 때 마다 뷰가 다시 그려지게 된다!
-````
+```
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
    ...

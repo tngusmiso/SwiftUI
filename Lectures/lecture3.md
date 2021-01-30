@@ -22,6 +22,9 @@ SwiftUI는 코드가 아닌 시스템에 의해 호출된다.
 
 뷰에서 카드가 터치되면, 뷰모델(`EmojiMemoryGame`)을 통해 모델(`MemoryGame`)의 `choose(card:)`함수가 호출된다. `card.isFaceUp`을 변경시키고 싶지만, 여기서 인자로 들어온 `card`는 복사된 값이다! 따라서 `card`의 내부를 변경할 수 없다...
 
+
+<br/>
+
 1. 카드의 실제 메모리에 접근하기 위해 카드 배열 `cards`로부터 인자로 들어온 `card`의 인덱스를 찾는 함수를 구현해보자
     * Card 구조체는 `Identifiable`을 채택하고 있으므로, `id`를 통해 식별 가능하다.
     * cards를 전체 탐색해도 찾지 못했을 경우, 별도로 처리해주어야 한다. 하지만 일단 에러가 발생하지 않도록 두고, **TODO** 마크를 통해 나중에 수정해주자!
@@ -36,6 +39,9 @@ SwiftUI는 코드가 아닌 시스템에 의해 호출된다.
         return 0   // TODO: bogus!
     }
     ```
+
+<br/>
+
 2. 인덱스로 직접 접근하여 `isFaceUp` 프로퍼티를 변경시키자
 
     ```
@@ -47,6 +53,9 @@ SwiftUI는 코드가 아닌 시스템에 의해 호출된다.
     ```
     * `chosenCard` 또한 변수에 **복사된 값**이 저장되므로 의도와 맞지 않다.
     * 인덱스를 찾은 카드 자체에서 연산을 수행하자.
+
+
+    <br/>
 
     <br/>
 
@@ -68,6 +77,8 @@ SwiftUI는 코드가 아닌 시스템에 의해 호출된다.
     }
     ```
 
+<br/>
+
 **모델**이 변경되었을 때 **뷰모델**이 알기 위해서는 뷰모델이 `ObservableObject` 프로토콜을 채택해야 한다. 모델에는 `@Published` 키워드를 붙여주고, 모델이 변경되는 시점에서 `objectWillChange.send()`를 호출해준다.
 ```
 class EmojiMemoryGame: ObservableObject {
@@ -79,6 +90,10 @@ class EmojiMemoryGame: ObservableObject {
     }
 }
 ```
+
+<br/>
+<br/>
+
 
 **뷰모델**이 `objectWillChange.send()`를 호출하는 시점을 **뷰**가 알기 위해서는 뷰가 가지고있는 뷰모델에 `@ObservedObject` 키워드를 붙여주어야 한다. `objectWillChange.send()`가 호출될 때 마다 뷰가 다시 그려지게 된다!
 ```

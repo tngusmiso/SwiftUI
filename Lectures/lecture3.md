@@ -1,6 +1,7 @@
 # Lecture 3 :: Reactive UI + Protocols + Layout
 
 [![Stanford SwiftUI 2020](http://img.youtube.com/vi/SIYdYpPXil4/0.jpg)](https://www.youtube.com/watch?v=SIYdYpPXil4)
+▶️ Video
 
 <br/>
 
@@ -123,3 +124,7 @@ struct EmojiMemoryGameView: View {
 
 ### 왜 프로토콜을 사용하는가?
 >  타입, 구조체/클래스, 다른 프로토콜, 열거형에게 프로토콜을 준수하도록 요구하는 것은 그들이 할 수 있는 일, 그들이 가지는 함수와 변수, 다른 객체의 특정 행동을 요구하는 코드를 말하기 위한 방법이다. 누구에게도 구현 방법은 말할 필요가 없으며, 프로토콜을 준수하는 것은 어떤 형태든 상관 없다. 기능에 중점을 둘 뿐, 구현 세부 사항은 숨긴다. 캡슐화의 궁극적인 목적이다.
+
+<br/>
+
+---

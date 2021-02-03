@@ -1,6 +1,7 @@
 # Lecture 3 :: Reactive UI + Protocols + Layout
 
 [![Stanford SwiftUI 2020](http://img.youtube.com/vi/SIYdYpPXil4/0.jpg)](https://www.youtube.com/watch?v=SIYdYpPXil4)
+
 ▶️ Video
 
 <br/>
@@ -54,9 +55,6 @@ SwiftUI는 코드가 아닌 시스템에 의해 호출된다.
     * `chosenCard` 또한 변수에 **복사된 값**이 저장되므로 의도와 맞지 않다.
     * 인덱스를 찾은 카드 자체에서 연산을 수행하자.
 
-
-    <br/>
-
     <br/>
 
     ```
@@ -92,8 +90,6 @@ class EmojiMemoryGame: ObservableObject {
 ```
 
 <br/>
-<br/>
-
 
 **뷰모델**이 `objectWillChange.send()`를 호출하는 시점을 **뷰**가 알기 위해서는 뷰가 가지고있는 뷰모델에 `@ObservedObject` 키워드를 붙여주어야 한다. `objectWillChange.send()`가 호출될 때 마다 뷰가 다시 그려지게 된다!
 ```
@@ -117,14 +113,31 @@ struct EmojiMemoryGameView: View {
 * 프로토콜은 **타입**으로 사용될 수 있다.
     - 어떤 변수의 타입이 특정 프로토콜이라면, 그 변수는 해당 프로토콜을 채택한 모든 구조체/클래스가 될 수 있다.
     - 예를들어, 변수의 타입이 `Movable`이라면, `Movable`을 채택한 클래스의 인스턴스가 변수에 저장될 수 있다.
-* `extension`에서 프로토콜의 **저장 프로퍼티의 구현부**를 작성할 수 있다.  
-    => 함수형 프로그램의 핵심!!
-    - extension에서 프로퍼티를 구현했다면, 그것이 default implementation이 된다.
-    - 구조체/클래스에서 프로토콜을 채택할 때 extension에서 구현한 내용은 별도로 구현하지 않아도 된다.
+
+<br/>
 
 ### 왜 프로토콜을 사용하는가?
 >  타입, 구조체/클래스, 다른 프로토콜, 열거형에게 프로토콜을 준수하도록 요구하는 것은 그들이 할 수 있는 일, 그들이 가지는 함수와 변수, 다른 객체의 특정 행동을 요구하는 코드를 말하기 위한 방법이다. 누구에게도 구현 방법은 말할 필요가 없으며, 프로토콜을 준수하는 것은 어떤 형태든 상관 없다. 기능에 중점을 둘 뿐, 구현 세부 사항은 숨긴다. 캡슐화의 궁극적인 목적이다.
 
 <br/>
 
+### Protocols Extension
+`extension`에서 프로토콜의 **저장 프로퍼티의 구현부**를 작성할 수 있다.  
+=> 함수형 프로그램의 핵심!!
+- extension에서 프로퍼티를 구현했다면, 그것이 default implementation이 된다.
+- 구조체/클래스에서 프로토콜을 채택할 때 extension에서 구현한 내용은 별도로 구현하지 않아도 된다.
+
+<br/>
+
 ---
+## 🍎 SwiftUI의 레이아웃
+
+### SwiftUI가 레이아웃을 표현하는 순서
+1. Container Views(HSatcks, VStacks 등)의 내부에 뷰의 공간을 제공한다.
+2. View들이 자체적으로 크기를 선택한다.
+3. Container View가 View들을 내부에 배치한다.
+
+### Container Views
+- HStack, VStack, ZStack 
+- ForEach : Stack에 하위뷰를 넣을 때, 어디에 어떻게 배치될지 Stack이 결정하도록 연기한다.
+- Modifier : .padding과 같은 속성
